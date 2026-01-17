@@ -36,6 +36,7 @@
     layout = "gb";
     variant = "";
   };
+  services.logind.settings.Login.HandleLidSwitch = "ignore";
 
   console.keyMap = "uk";
 
