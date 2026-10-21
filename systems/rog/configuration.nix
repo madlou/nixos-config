@@ -11,6 +11,7 @@
   boot.loader.grub.device = "nodev";
   boot.loader.grub.useOSProber = true;
   boot.loader.grub.efiSupport = true;
+  boot.loader.systemd-boot.configurationLimit = 5;
 
   networking.hostName = "rog";
   networking.networkmanager.enable = true;
@@ -61,6 +62,7 @@
   };
 
   programs.firefox.enable = true;
+  programs.geary.enable = true;
   
   nix.settings.extra-experimental-features = [ "nix-command" "flakes" ];
 
@@ -72,13 +74,18 @@
     pwsafe
     tor-browser
     git
+    vscode
+    deskflow
+    discord
+    appimage-run
+    bitwarden-desktop
   ];
 
   services.openssh.enable = true;
 
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # networking.firewall.enable = false;
+  networking.firewall.allowedTCPPorts = [ 24800 ];
+  networking.firewall.allowedUDPPorts = [ 24800 ];
+  networking.firewall.enable = true;
   
   services.plex = {
     enable = true;
@@ -86,9 +93,21 @@
     user="lewis";
   };
   
-  systemd.settings.Manager.DefaultTimeoutStopSec = "30s";
+  inputs.whisper-dictation.url = "github:jacopone/whisper-dictation";
 
-  system.stateVersion = "25.11"; # Did you read the comment?
+  # In your configuration
+  environment.systemPackages = [
+    inputs.whisper-dictation.packages.${system}.default
+  ];
+  
+  systemd.settings.Manager.DefaultTimeoutStopSec = "5s";
+
+  system.stateVersion = "26.05";
+  
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-39.8.10"
+  ];
+
 
 }
 

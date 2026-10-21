@@ -71,6 +71,7 @@
     wine
     pavucontrol
     discord
+    ventoy
     (callPackage ./turtle-wow/default.nix { })
   ];
 
